@@ -34,3 +34,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           projectBaseDir: .
+          args: >
+            -Dsonar.organization=kiriiiv
+            -Dsonar.projectKey=kiriIIV_java-project-99
+            -Dsonar.sources=src
+            -Dsonar.tests=src/test
+            -Dsonar.java.binaries=build/classes
+      
