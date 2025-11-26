@@ -37,7 +37,7 @@ jobs:
           args: >
             -Dsonar.organization=kiriiiv
             -Dsonar.projectKey=kiriIIV_java-project-99
-            -Dsonar.sources=src
-            -Dsonar.tests=src/test
-            -Dsonar.java.binaries=build/classes
-      
+            -Dsonar.sources=src/main/java
+            -Dsonar.tests=src/test/java
+            -Dsonar.java.binaries=build/classes/java/main
+            -Dsonar.java.test.binaries=build/classes/java/test
