@@ -8,13 +8,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class RootController {
 
-    @GetMapping({"/", "/api"})
-    public ResponseEntity<Map<String, String>> index() {
-        return ResponseEntity.ok(Map.of("status", "ok"));
-    }
-
-    @GetMapping("/welcome")
-    public ResponseEntity<Map<String, String>> welcome() {
+    @GetMapping("/api/health")
+    public ResponseEntity<Map<String, String>> health() {
         return ResponseEntity.ok(Map.of("status", "ok"));
     }
 }
