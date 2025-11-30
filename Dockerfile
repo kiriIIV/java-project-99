@@ -1,13 +1,11 @@
-FROM eclipse-temurin:21-jdk as build
-WORKDIR .
+FROM gradle:8.5.0-jdk21
+
+WORKDIR /app
+
 COPY . .
-RUN ./gradlew bootJar --no-daemon
 
-FROM eclipse-temurin:21-jdk
-WORKDIR .
-COPY --from=build /build/libs/*.jar app.jar
-EXPOSE 8080
+RUN chmod +x gradlew
 
-ENV SPRING_PROFILES_ACTIVE=prod
+RUN ./gradlew installDist --no-daemon
 
-ENTRYPOINT ["java", "-jar", "app.jar"]
+CMD ./build/install/app/bin/app
