@@ -1,25 +1,28 @@
 package hexlet.code.mapper;
-import hexlet.code.dto.UserCreateDTO;
-import hexlet.code.dto.UserDTO;
-import hexlet.code.dto.UserUpdateDTO;
+
+import hexlet.code.dto.users.UserCreateDto;
+import hexlet.code.dto.users.UserResponseDto;
+import hexlet.code.dto.users.UserUpdateDto;
 import hexlet.code.model.User;
-
+import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
-import org.mapstruct.MappingConstants;
-import org.mapstruct.NullValuePropertyMappingStrategy;
-import org.mapstruct.ReportingPolicy;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.NullValuePropertyMappingStrategy;
 
-@Mapper(
-        uses = {JsonNullableMapper.class},
-        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
-        componentModel = MappingConstants.ComponentModel.SPRING,
-        unmappedTargetPolicy = ReportingPolicy.IGNORE
-)
-public abstract class UserMapper {
-    public abstract UserDTO map(User user);
+@Mapper(componentModel = "spring")
+public interface UserMapper {
 
-    public abstract User map(UserCreateDTO userCreateDTO);
+    UserResponseDto toResponse(User user);
 
-    public abstract void update(UserUpdateDTO userUpdateDTO, @MappingTarget User user);
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "passwordHash", ignore = true)
+    @Mapping(target = "createdAt", expression = "java(java.time.LocalDate.now())")
+    User fromCreate(UserCreateDto dto);
+
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "passwordHash", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    void updateFromDto(UserUpdateDto dto, @MappingTarget User user);
 }

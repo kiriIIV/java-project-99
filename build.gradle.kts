@@ -1,16 +1,15 @@
-plugins {
-	id("org.springframework.boot") version "3.4.5"
-	id("io.spring.dependency-management") version "1.1.7"
-	id("io.freefair.lombok") version "8.6"
-	id("org.sonarqube") version "6.2.0.5505"
-	id("io.sentry.jvm.gradle") version "5.6.0"
-	id("jacoco")
-	checkstyle
-	application
-}
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+import org.gradle.api.tasks.testing.logging.TestLogEvent
 
-application {
-	mainClass.set("hexlet.code.AppApplication")
+plugins {
+	application
+	jacoco
+	checkstyle
+	id("org.springframework.boot") version "3.5.4"
+	id("io.spring.dependency-management") version "1.1.7"
+	id("org.sonarqube") version "6.2.0.5505"
+	id("io.sentry.jvm.gradle") version "4.4.1"
+	id("io.freefair.lombok") version "8.4"
 }
 
 group = "hexlet.code"
@@ -22,10 +21,6 @@ java {
 	}
 }
 
-jacoco {
-	toolVersion = "0.8.10"
-}
-
 repositories {
 	mavenCentral()
 }
@@ -33,52 +28,79 @@ repositories {
 dependencies {
 	implementation("org.mapstruct:mapstruct:1.5.5.Final")
 	annotationProcessor("org.mapstruct:mapstruct-processor:1.5.5.Final")
-	implementation("jakarta.validation:jakarta.validation-api:3.0.2")
-	implementation("org.openapitools:jackson-databind-nullable:0.2.6")
+	testAnnotationProcessor("org.mapstruct:mapstruct-processor:1.5.5.Final")
+
 	implementation("org.springframework.boot:spring-boot-starter-web")
-	testImplementation("org.springframework.boot:spring-boot-starter-test")
-	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-	runtimeOnly("com.h2database:h2")
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
-	testImplementation("org.springframework.security:spring-security-test")
-	testImplementation(platform("org.junit:junit-bom:5.10.0"))
-	testImplementation("org.junit.jupiter:junit-jupiter:5.10.0")
-	implementation("net.datafaker:datafaker:2.0.1")
-	implementation("org.instancio:instancio-junit:3.3.0")
-	testImplementation("net.javacrumbs.json-unit:json-unit-assertj:3.2.2")
-	implementation("org.springframework.boot:spring-boot-starter-logging")
+	implementation("org.springframework.security:spring-security-oauth2-jose")
+
+	runtimeOnly("com.h2database:h2:2.2.224")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
-	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.7.0")
-	implementation("io.github.cdimascio:dotenv-java:3.0.0")
+
+	implementation("org.mindrot:jbcrypt:0.4")
+	implementation("com.auth0:java-jwt:4.4.0")
+	implementation("at.favre.lib:bcrypt:0.10.2")
+
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0")
+
+	implementation("org.flywaydb:flyway-core:10.17.3")
+	implementation("org.flywaydb:flyway-database-postgresql:10.17.3")
+
+	runtimeOnly("org.postgresql:postgresql:42.7.3")
+
+	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testImplementation("org.springframework.security:spring-security-test")
+	testImplementation("io.rest-assured:rest-assured:5.4.0")
+	testImplementation("org.assertj:assertj-core:3.26.0")
+	testImplementation("com.h2database:h2:2.2.224")
 }
 
-tasks.withType<Test> {
-	useJUnitPlatform()
-	maxParallelForks = 1
-	forkEvery = 0
+configurations.all {
+	exclude(group = "org.eclipse.jetty")
 }
 
-sonar {
-	properties {
-		property("sonar.projectKey", "kiriIIV_java-project-99")
-		property("sonar.organization", "kiriiiv")
-		property("sonar.host.url", "https://sonarcloud.io")
-	}
+application {
+	mainClass.set("hexlet.code.AppApplication")
+}
+jacoco {
+	toolVersion = "0.8.12"
 }
 
 tasks.test {
 	useJUnitPlatform()
+	systemProperty("spring.profiles.active", "test")
 	finalizedBy(tasks.jacocoTestReport)
+	testLogging {
+		events = setOf(
+			TestLogEvent.PASSED,
+			TestLogEvent.FAILED,
+			TestLogEvent.SKIPPED
+		)
+		exceptionFormat = TestExceptionFormat.FULL
+		showExceptions = true
+		showStandardStreams = true
+	}
 }
 
 tasks.jacocoTestReport {
 	dependsOn(tasks.test)
 	reports {
-		xml.required.set(true)
-		csv.required.set(false)
-		html.required.set(true)
+		xml.required = true
+		html.required = true
 	}
 }
 
+sonar {
+	properties {
+		property("sonar.host.url", "https://sonarcloud.io")
+		property("sonar.projectKey", "kiriIIV_java-project-99")
+		property("sonar.organization", "kiriiiv")
+		property("sonar.sources", "src/main/java")
+		property("sonar.tests", "src/test/java")
+		property("sonar.java.binaries", "build/classes/java/main")
+		property("sonar.junit.reportPaths", "build/test-results/test")
+		property ("sonar.coverage.jacoco.xmlReportPaths", "build/reports/jacoco/test/jacocoTestReport.xml")
+	}
+}

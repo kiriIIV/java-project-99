@@ -1,11 +1,23 @@
-FROM gradle:8.5.0-jdk21
+# ===== Build stage =====
+FROM eclipse-temurin:21-jdk AS builder
+WORKDIR /project
 
-WORKDIR /app
+COPY gradlew ./gradlew
+COPY gradle ./gradle
+COPY settings.gradle.kts ./settings.gradle.kts
+COPY build.gradle.kts ./build.gradle.kts
+COPY src ./src
 
-COPY . .
+RUN chmod +x ./gradlew
+RUN ./gradlew --no-daemon clean bootJar
 
-RUN chmod +x gradlew
+FROM eclipse-temurin:21-jre
+WORKDIR /opt/app
 
-RUN ./gradlew installDist --no-daemon
+COPY --from=builder /project/build/libs/*.jar /opt/app/app.jar
 
-CMD ./build/install/app/bin/app
+ENV SPRING_PROFILES_ACTIVE=prod
+ENV PORT=8080
+EXPOSE 8080
+
+ENTRYPOINT ["java","-jar","/opt/app/app.jar"]
