@@ -21,7 +21,7 @@ public class JwtBeansConfig {
 
     private final String secret;
 
-    public JwtBeansConfig(@Value("${spring.security.oauth2.resourceserver.jwt.secret:}") String secret) {
+    public JwtBeansConfig(@Value("${app.jwt.secret:}") String secret) {
         this.secret = secret;
     }
 
