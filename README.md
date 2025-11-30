@@ -9,9 +9,5 @@
 ### Task Manager 
 This application is a task management system. It allows you to set tasks, assign performers and change their statuses. To work with the system, registration and authentication are required.
 
-## Demo
-Приложение деплоится на Render.com:  
-
-login: `admin@local`  password: `admin123`
 
 
