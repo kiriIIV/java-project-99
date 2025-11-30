@@ -7,7 +7,9 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=kiriIIV_java-project-99&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=kiriIIV_java-project-99)[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=kiriIIV_java-project-99&metric=coverage)](https://sonarcloud.io/summary/new_code?id=kiriIIV_java-project-99)[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=kiriIIV_java-project-99&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=kiriIIV_java-project-99)[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=kiriIIV_java-project-99&metric=bugs)](https://sonarcloud.io/summary/new_code?id=kiriIIV_java-project-99)
 
 ### Task Manager 
-This application is a task management system. It allows you to set tasks, assign performers and change their statuses. To work with the system, registration and authentication are required.
+Task Manager – система управления задачами. Она позволяет ставить задачи, назначать исполнителей и менять их статусы. Для работы с системой требуется регистрация и аутентификация.
 
+### Ссылка на приложение
+https://java-project-99-0ywh.onrender.com
 
 
