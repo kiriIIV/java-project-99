@@ -1,18 +1,13 @@
-FROM gradle:8.9-jdk21-alpine AS build
-
-WORKDIR /app
-
+FROM eclipse-temurin:21-jdk as build
+WORKDIR .
 COPY . .
+RUN ./gradlew bootJar --no-daemon
 
-RUN gradle clean bootJar --no-daemon
-
-
-FROM eclipse-temurin:21-jre-alpine
-
-WORKDIR /app
-
-COPY --from=build /app/build/libs/*.jar app.jar
-
+FROM eclipse-temurin:21-jdk
+WORKDIR .
+COPY --from=build /build/libs/*.jar app.jar
 EXPOSE 8080
+
+ENV SPRING_PROFILES_ACTIVE=prod
 
 ENTRYPOINT ["java", "-jar", "app.jar"]
