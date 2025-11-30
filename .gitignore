@@ -16,7 +16,6 @@ replay_pid*
 .gradle/
 
 ### Spring Boot ###
-*.jar
 *.war
 
 ### IDE ###
