@@ -7,7 +7,7 @@ plugins {
 	checkstyle
 	id("org.springframework.boot") version "3.5.4"
 	id("io.spring.dependency-management") version "1.1.7"
-	id("org.sonarqube") version "6.2.0.5505"
+	id("org.sonarqube") version "7.1.0.6387"
 	id("io.sentry.jvm.gradle") version "4.4.1"
 	id("io.freefair.lombok") version "8.4"
 }
@@ -95,8 +95,8 @@ tasks.jacocoTestReport {
 sonar {
 	properties {
 		property("sonar.host.url", "https://sonarcloud.io")
-		property("sonar.projectKey", "kiriIIV_java-project-99")
 		property("sonar.organization", "kiriiiv")
+		property("sonar.projectKey", "kiriIIV_java-project-72")
 		property("sonar.sources", "src/main/java")
 		property("sonar.tests", "src/test/java")
 		property("sonar.java.binaries", "build/classes/java/main")
