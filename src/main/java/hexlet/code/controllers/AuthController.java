@@ -7,8 +7,6 @@ import hexlet.code.repository.UserRepository;
 import hexlet.code.security.JwtService;
 import jakarta.validation.Valid;
 
-import java.util.Optional;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
