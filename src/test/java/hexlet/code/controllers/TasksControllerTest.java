@@ -11,7 +11,9 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import hexlet.code.model.User;
 import hexlet.code.repository.UserRepository;
+import hexlet.code.repository.TaskRepository;
 import hexlet.code.security.JwtService;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -29,6 +31,9 @@ class TasksControllerTest {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private TaskRepository taskRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -52,6 +57,7 @@ class TasksControllerTest {
     }
 
     @Test
+    @Transactional
     void crudFlow() throws Exception {
         mockMvc.perform(get("/api/tasks/999999")
                         .header("Authorization", bearer)

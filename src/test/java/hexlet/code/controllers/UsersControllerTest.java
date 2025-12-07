@@ -6,6 +6,7 @@ import hexlet.code.dto.users.UserCreateDto;
 import hexlet.code.dto.users.UserResponseDto;
 import hexlet.code.model.User;
 import hexlet.code.repository.UserRepository;
+import hexlet.code.repository.TaskRepository;
 import hexlet.code.mapper.UserMapper;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
@@ -21,6 +22,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.transaction.annotation.Transactional;
 
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -45,6 +47,9 @@ class UsersControllerTest {
     private UserRepository userRepository;
 
     @Autowired
+    private TaskRepository taskRepository;
+
+    @Autowired
     private ObjectMapper objectMapper;
 
     @Autowired
@@ -65,6 +70,7 @@ class UsersControllerTest {
     }
 
     @Test
+    @Transactional
     @DisplayName("GET /api/users возвращает тот же список, что и в БД")
     void listUsersMatchesDatabase() throws Exception {
         MvcResult resp = mockMvc.perform(get("/api/users")
@@ -89,6 +95,7 @@ class UsersControllerTest {
     }
 
     @Test
+    @Transactional
     public void testCreate() throws Exception {
         var data = new UserCreateDto(
                 "newuser@example.com",
@@ -112,6 +119,7 @@ class UsersControllerTest {
     }
 
     @Test
+    @Transactional
     public void testIndex() throws Exception {
         var response = mockMvc.perform(get("/api/users").with(jwt()))
                 .andExpect(status().isOk())
@@ -129,6 +137,7 @@ class UsersControllerTest {
     }
 
     @Test
+    @Transactional
     public void testUpdate() throws Exception {
         var data = new HashMap<String, Object>();
         data.put("firstName", "Updated Name");
@@ -145,6 +154,7 @@ class UsersControllerTest {
     }
 
     @Test
+    @Transactional
     public void testDelete() throws Exception {
         var request = delete("/api/users/" + testUser.getId())
                 .with(jwt());
@@ -156,6 +166,7 @@ class UsersControllerTest {
     }
 
     @Test
+    @Transactional
     public void testShow() throws Exception {
         var request = get("/api/users/" + testUser.getId())
                 .with(jwt());
