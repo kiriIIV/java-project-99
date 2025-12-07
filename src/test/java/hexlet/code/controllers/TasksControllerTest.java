@@ -37,6 +37,7 @@ class TasksControllerTest {
 
     @BeforeEach
     void setUp() {
+        userRepository.deleteAll();
         String email = "mvc@example.com";
         String pass = "pass";
         User u = userRepository.findByEmail(email).orElseGet(() -> {
