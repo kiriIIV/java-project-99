@@ -13,7 +13,6 @@ import hexlet.code.model.User;
 import hexlet.code.repository.UserRepository;
 import hexlet.code.repository.TaskRepository;
 import hexlet.code.security.JwtService;
-import org.springframework.transaction.annotation.Transactional;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -42,6 +41,7 @@ class TasksControllerTest {
 
     @BeforeEach
     void setUp() {
+        taskRepository.deleteAll();
         userRepository.deleteAll();
         String email = "mvc@example.com";
         String pass = "pass";
@@ -57,7 +57,6 @@ class TasksControllerTest {
     }
 
     @Test
-    @Transactional
     void crudFlow() throws Exception {
         mockMvc.perform(get("/api/tasks/999999")
                         .header("Authorization", bearer)

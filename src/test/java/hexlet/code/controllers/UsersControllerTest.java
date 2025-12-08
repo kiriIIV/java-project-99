@@ -59,14 +59,16 @@ class UsersControllerTest {
 
     @BeforeEach
     void setUp() {
+        taskRepository.deleteAll();
         userRepository.deleteAll();
+
         testUser = new User();
-        testUser.setEmail("mvc@example.com");
+        testUser.setEmail("mvc+" + System.nanoTime() + "@example.com");
         testUser.setPasswordHash("passwordHash");
         testUser.setFirstName("John");
         testUser.setLastName("Doe");
 
-        userRepository.save(testUser);
+        testUser = userRepository.save(testUser);
     }
 
     @Test
