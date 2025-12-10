@@ -23,8 +23,7 @@ public record UserResponseDto(
         return Objects.equals(id, that.id)
                 && Objects.equals(email, that.email)
                 && Objects.equals(firstName, that.firstName)
-                && Objects.equals(lastName, that.lastName)
-                && Objects.equals(createdAt, that.createdAt);
+                && Objects.equals(lastName, that.lastName);
     }
 
     @Override

@@ -91,8 +91,7 @@ public class User {
                 && Objects.equals(email, user.email)
                 && Objects.equals(passwordHash, user.passwordHash)
                 && Objects.equals(firstName, user.firstName)
-                && Objects.equals(lastName, user.lastName)
-                && Objects.equals(createdAt, user.createdAt);
+                && Objects.equals(lastName, user.lastName);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package hexlet.code.dto.auth;
 
+import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -37,5 +38,18 @@ public class LoginRequest {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getLogin() {
+        if (email != null && !email.isBlank()) {
+            return email;
+        }
+        return username;
+    }
+
+    @AssertTrue(message = "Either email or username must be provided")
+    public boolean isLoginPresent() {
+        return (email != null && !email.isBlank())
+                || (username != null && !username.isBlank());
     }
 }

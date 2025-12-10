@@ -10,7 +10,6 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,23 +33,18 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody @Valid LoginRequest request) {
-        String login = request.getEmail();
-        if (login == null || login.isBlank()) {
-            login = request.getUsername();
-        }
 
-        if (login == null || login.isBlank()) {
-            throw new AuthenticationException("Login (email/username) is required") {
+        String login = request.getLogin();
 
-            };
-        }
-
-        UsernamePasswordAuthenticationToken authToken =
-                new UsernamePasswordAuthenticationToken(login, request.getPassword());
+        var authToken = new UsernamePasswordAuthenticationToken(
+                login,
+                request.getPassword()
+        );
 
         authenticationManager.authenticate(authToken);
 
-        User user = userRepository.findByEmail(login).orElseThrow(() -> new RuntimeException("User not found"));
+        User user = userRepository.findByEmail(login)
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
         String jwt = jwtService.issue(user.getId(), user.getEmail());
         return ResponseEntity.ok(new LoginResponse(jwt));

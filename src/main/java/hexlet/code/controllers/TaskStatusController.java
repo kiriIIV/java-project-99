@@ -23,26 +23,26 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 @RestController
 @RequestMapping({"/api/task_statuses", "/api/task-statuses", "/task_statuses"})
 public class TaskStatusController {
-    private final TaskStatusService service;
+    private final TaskStatusService taskStatusService;
 
     public TaskStatusController(TaskStatusService service) {
-        this.service = service;
+        this.taskStatusService = service;
     }
 
     @GetMapping
     public ResponseEntity<List<TaskStatusResponseDto>> index() {
-        return ResponseEntity.ok(service.findAll());
+        return ResponseEntity.ok(taskStatusService.findAll());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<TaskStatusResponseDto> show(@PathVariable Long id) {
-        return ResponseEntity.ok(service.findById(id));
+        return ResponseEntity.ok(taskStatusService.findById(id));
     }
 
     @PostMapping
     public ResponseEntity<TaskStatusResponseDto> create(@Validated(OnCreate.class)
                                                         @RequestBody TaskStatusUpsertDto dto) {
-        TaskStatusResponseDto created = service.create(dto);
+        TaskStatusResponseDto created = taskStatusService.create(dto);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(created.getId())
@@ -54,7 +54,7 @@ public class TaskStatusController {
     public ResponseEntity<TaskStatusResponseDto> update(@PathVariable Long id,
                                                         @Validated(OnUpdate.class)
                                                         @RequestBody TaskStatusUpsertDto dto) {
-        TaskStatusResponseDto updated = service.updatePartial(id, dto);
+        TaskStatusResponseDto updated = taskStatusService.updatePartial(id, dto);
         return ResponseEntity.ok(updated);
     }
 
@@ -62,13 +62,13 @@ public class TaskStatusController {
     public ResponseEntity<TaskStatusResponseDto> partialUpdate(@PathVariable Long id,
                                                                @Validated(OnUpdate.class)
                                                                @RequestBody TaskStatusUpsertDto dto) {
-        TaskStatusResponseDto updated = service.updatePartial(id, dto);
+        TaskStatusResponseDto updated = taskStatusService.updatePartial(id, dto);
         return ResponseEntity.ok(updated);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        service.delete(id);
+        taskStatusService.delete(id);
         return ResponseEntity.noContent().build();
     }
 }
