@@ -28,6 +28,6 @@ public record UserResponseDto(
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, email, firstName, lastName, createdAt);
+        return Objects.hash(id, email, firstName, lastName);
     }
 }

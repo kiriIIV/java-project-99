@@ -89,13 +89,12 @@ public class User {
         User user = (User) o;
         return Objects.equals(id, user.id)
                 && Objects.equals(email, user.email)
-                && Objects.equals(passwordHash, user.passwordHash)
                 && Objects.equals(firstName, user.firstName)
                 && Objects.equals(lastName, user.lastName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, email, passwordHash, firstName, lastName, createdAt);
+        return Objects.hash(id, email, firstName, lastName);
     }
 }
